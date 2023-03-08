@@ -1,0 +1,28 @@
+---
+- hosts: php-fm
+  become: true
+  vars_prompt:
+
+    - name: username
+      prompt: "Введите имя пользователя"
+      private: no
+      default: webmaster
+
+    - name: userpassword
+      prompt: "Введите пароль"
+      private: yes
+      default: this_moron_didn.t_enter_the_password
+
+    - name: php_listen_adress
+      prompt: "Введите параметр php-fm php_listen_adress"
+      private: no
+
+    - name: sitename
+      prompt: "Введите адрес сайта"
+      private: no
+
+  roles:
+    - ufw
+    - user
+    - php
+    - composer

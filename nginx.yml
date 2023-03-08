@@ -1,0 +1,27 @@
+---
+- hosts: nginx
+  become: true
+  vars_prompt:
+
+    - name: username
+      prompt: "Введите имя пользователя"
+      private: no
+      default: webmaster
+
+    - name: userpassword
+      prompt: "Введите пароль"
+      private: yes
+      default: this_moron_didn.t_enter_the_password
+
+    - name: fastcgi_pass
+      prompt: "Введите параметр nginx fastcgi_pass"
+      private: no
+
+    - name: sitename
+      prompt: "Введите адрес сайта"
+      private: no
+
+  roles:
+    - ufw
+    - user
+    - http

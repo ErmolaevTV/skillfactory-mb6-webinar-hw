@@ -1,0 +1,12 @@
+---
+- hosts: webservers
+  vars:
+    username: webmaster
+    userpassword: $6$TDArDjR6$BQc8.pBdtwzqvQPTDyVXu5FxU/4sLY0a/
+    sitename: test.local
+  roles:
+    - common
+    - user
+    - nginx
+    - php
+    - composer

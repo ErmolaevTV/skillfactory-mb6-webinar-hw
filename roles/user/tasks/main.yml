@@ -1,0 +1,34 @@
+---
+# tasks file for user
+- name: Create webmaster user
+  user:
+    name: "{{ username }}"
+    password: "{{ userpassword | password_hash('sha512') }}"
+    shell: /bin/bash
+    state: present
+
+- name: Add username user to the sudoers
+  copy:
+    dest: "/etc/sudoers.d/{{ username }}"
+    content: "{{ username }}  ALL=(ALL)  NOPASSWD: ALL"
+
+- name: Create SSH key from webmaster in username/.ssh/id_rsa
+  user:
+    name: "{{ username }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+
+- name: Add public key in file  "authorized key" from id_rsa.pub
+  authorized_key:
+    user: "{{ username }}"
+    state: present
+    key: "{{ lookup('file', '/home/sysops/.ssh/id_rsa.pub') }}"
+
+- name: Disable Password Authentication
+  lineinfile:
+        dest=/etc/ssh/sshd_config
+        regexp='^PasswordAuthentication'
+        line="PasswordAuthentication no"
+        state=present
+        backup=yes

@@ -42,3 +42,11 @@
 
 ## db-[99:101]-node.example.com
 
+[webserver]
+10.0.1.27
+
+[nginx]
+10.0.1.33
+
+[php-fm]
+10.0.1.28

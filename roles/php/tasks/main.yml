@@ -1,0 +1,21 @@
+---
+# tasks file for php
+- name: Install php packages
+  apt:
+    name:
+    - php7.4-fpm
+    update_cache: yes
+    state: present
+
+- name: Set PHP user, group, listen.owner, listen.group
+  lineinfile:
+    dest: /etc/php/7.4/fpm/pool.d/www.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - { regexp: "^listen =", line: "listen = {{ php_listen_adress }}" }
+    - { regexp: "^user =", line: "user = {{ username }}" }
+    - { regexp: "^group =", line: "group = {{ username }}" }
+    - { regexp: "^listen.owner =", line: "listen.owner = {{ username }}" }
+    - { regexp: "^listen.group =", line: "listen.group = {{ username }}" }
+  notify: restart php
